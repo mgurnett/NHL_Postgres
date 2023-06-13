@@ -39,4 +39,20 @@ class Team(models.Model):
 
     def __str__ (self):
         return f"{self.name} that is in the {self.division.name} division"
+        
+class Player(models.Model):
+    fullName = models.CharField(max_length = 100)
+    nhl_id = models.IntegerField ()
+    jerseyNumber = models.IntegerField ()
+    city = models.CharField(max_length = 100)
+    position_name = models.CharField(max_length = 100)
+    position_type = models.CharField(max_length = 100)
+    position_ab = models.CharField(max_length = 100)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['jerseyNumber']
+
+    def __str__ (self):
+        return f"{self.fullName} of the {self.team.name} is a {self.position_name}"
     

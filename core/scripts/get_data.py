@@ -47,3 +47,12 @@ def load_teams (**kwargs):  # set to True if you wnat it to effect the database
 def run():
     # load_divisions ( database = False, is_print = True)
     load_teams ( database = False, is_print = True)
+
+    fullName = models.CharField(max_length = 100)
+    nhl_id = models.IntegerField ()
+    jerseyNumber = models.IntegerField ()
+    city = models.CharField(max_length = 100)
+    position_name = models.CharField(max_length = 100)
+    position_type = models.CharField(max_length = 100)
+    position_ab = models.CharField(max_length = 100)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
