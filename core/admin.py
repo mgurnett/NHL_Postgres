@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from .models import Conference, Division, Team, Player
+from .models import Conference, Division, Team, Player, Player_vitals
 
 
 @admin.register(Conference)
@@ -52,4 +52,33 @@ class PlayerAdmin(admin.ModelAdmin):
         'position_type',
         'position_ab',
         'team',
+    )
+
+
+@admin.register(Player_vitals)
+class Player_vitalsAdmin(admin.ModelAdmin):
+    list_display = (
+        'player',
+        'firstName',
+        'lastName',
+        'birthDate',
+        'birthCity',
+        'birthCountry',
+        'nationality',
+        'height',
+        'weight',
+        'active',
+        'alternateCaptain',
+        'captain',
+        'rookie',
+        'shootsCatches',
+        'rosterStatus',
+    )
+    list_filter = (
+        'player',
+        'birthDate',
+        'active',
+        'alternateCaptain',
+        'captain',
+        'rookie',
     )

@@ -54,14 +54,14 @@ class Player(models.Model):
 
     def __str__ (self):
         return f"{self.fullName} of the {self.team.name} is a {self.position_name}"
-        
-class Player_stats(models.Model):
+    
+
+class Player_vitals(models.Model):
     player = models.OneToOneField( Player, on_delete=models.CASCADE, primary_key=True, )
     firstName = models.CharField(max_length = 100)
     lastName = models.CharField(max_length = 100)
     birthDate = models.DateField()
     birthCity = models.CharField(max_length = 100)
-    birthStateProvince = models.CharField(max_length = 100)
     birthCountry = models.CharField(max_length = 100)
     nationality = models.CharField(max_length = 100)
     height = models.CharField(max_length = 100)
@@ -78,4 +78,3 @@ class Player_stats(models.Model):
 
     def __str__ (self):
         return f"{self.firstName} {self.lastName} shoots {self.shootsCatches}"
-    

@@ -2,6 +2,7 @@ from core.models import *
 from .read_api import *
 
 SEASON = 20222023
+OILERS = 22
 
 def load_divisions (**kwargs):  # set to True if you wnat it to effect the database
     if kwargs['database']:
@@ -48,6 +49,36 @@ def load_teams (**kwargs):  # set to True if you wnat it to effect the database
             print (t)
     return team_list
 
+def load_player_vitals (player, **kwargs):  # set to True if you wnat it to effect the database
+    if kwargs['database']:
+        Player_vitals.objects.all().delete()
+    data = read_api (f'people/{player}')
+    # print (data)
+    for record in data ['people']:
+        v = Player_vitals (
+            player = Player.objects.get(nhl_id = player),
+            firstName = record ['firstName'],
+            lastName = record ['lastName'],
+            birthDate = record ['birthDate'],
+            birthCity = record ['birthCity'],
+            birthCountry = record ['birthCountry'],
+            nationality = record ['nationality'],
+            height = record ['height'],
+            weight = record ['weight'],
+            active = record ['active'],
+            alternateCaptain = record ['alternateCaptain'],
+            captain = record ['captain'],
+            rookie = record ['rookie'],
+            shootsCatches = record ['shootsCatches'],
+            rosterStatus = record ['rosterStatus'],
+        )
+        if kwargs['database']:
+            v.save()
+        if kwargs['is_print']:
+            print (v)
+    return
+
+
 def load_roster (team, **kwargs):  # set to True if you wnat it to effect the database
     if kwargs['database']:
         Player.objects.all().delete()
@@ -72,33 +103,13 @@ def load_roster (team, **kwargs):  # set to True if you wnat it to effect the da
             r.save()
         if kwargs['is_print']:
             print (r)
-    return
-
-def load_player_stats (player, **kwargs):  # set to True if you wnat it to effect the database
-    if kwargs['database']:
-        Player_stats.objects.all().delete()
-    data = read_api (f'people/{player}')
-    print (data)
-    # for record in data:
-    #     r = Player (
-    #         fullName = record.get('person')['fullName'],
-    #         nhl_id = player_id,
-    #         team = Team.objects.get(nhl_id = team),
-    #         jerseyNumber = jn,
-    #         position_name = record['position']['name'],
-    #         position_type = record['position']['type'],
-    #         position_ab = record['position']['abbreviation'],
-    #     )
-    #     if kwargs['database']:
-    #         r.save()
-    #     if kwargs['is_print']:
-    #         print (r)
+        load_player_vitals ( player_id, database = True, is_print = True)
     return
 
 def run():
     # load_divisions ( database = False, is_print = True)
-    team_list = load_teams ( database = False, is_print = True)
-    # load_roster ( 22, database = True, is_print = True)
-    for team in team_list:
-        load_roster ( team.nhl_id, database = False, is_print = True)
-        load_player_stats ( team.nhl_id, database = False, is_print = True)
+    team_list = load_teams ( database = False, is_print = False)
+    load_roster ( OILERS, database = True, is_print = False)
+    # for team in team_list:
+    #     load_roster ( team.nhl_id, database = False, is_print = True)
+        
