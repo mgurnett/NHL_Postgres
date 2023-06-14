@@ -44,7 +44,6 @@ class Player(models.Model):
     fullName = models.CharField(max_length = 100)
     nhl_id = models.IntegerField ()
     jerseyNumber = models.IntegerField ()
-    city = models.CharField(max_length = 100)
     position_name = models.CharField(max_length = 100)
     position_type = models.CharField(max_length = 100)
     position_ab = models.CharField(max_length = 100)
@@ -55,4 +54,28 @@ class Player(models.Model):
 
     def __str__ (self):
         return f"{self.fullName} of the {self.team.name} is a {self.position_name}"
+        
+class Player_stats(models.Model):
+    player = models.OneToOneField( Player, on_delete=models.CASCADE, primary_key=True, )
+    firstName = models.CharField(max_length = 100)
+    lastName = models.CharField(max_length = 100)
+    birthDate = models.DateField()
+    birthCity = models.CharField(max_length = 100)
+    birthStateProvince = models.CharField(max_length = 100)
+    birthCountry = models.CharField(max_length = 100)
+    nationality = models.CharField(max_length = 100)
+    height = models.CharField(max_length = 100)
+    weight = models.CharField(max_length = 100)
+    active = models.BooleanField()
+    alternateCaptain = models.BooleanField()
+    captain = models.BooleanField()
+    rookie = models.BooleanField()
+    shootsCatches = models.CharField(max_length = 2)
+    rosterStatus = models.CharField(max_length = 100)
+
+    class Meta:
+        ordering = ['firstName']
+
+    def __str__ (self):
+        return f"{self.firstName} {self.lastName} shoots {self.shootsCatches}"
     

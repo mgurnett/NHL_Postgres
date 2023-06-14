@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from .models import Conference, Division, Team
+from .models import Conference, Division, Team, Player
 
 
 @admin.register(Conference)
@@ -38,5 +38,18 @@ class TeamAdmin(admin.ModelAdmin):
         'abbreviation',
         'officialSiteUrl',
     )
-    list_filter = ('division',)
     search_fields = ('name',)
+
+
+@admin.register(Player)
+class PlayerAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'fullName',
+        'nhl_id',
+        'jerseyNumber',
+        'position_name',
+        'position_type',
+        'position_ab',
+        'team',
+    )
