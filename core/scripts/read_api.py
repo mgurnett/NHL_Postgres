@@ -1,11 +1,13 @@
 import requests
 
-def read_api (endpoint):
+def read_api (endpoint, print_url = False):
 
     # Set up the request URL and headers
     base_url = "https://statsapi.web.nhl.com/api/v1/"
     # endpoint = "your_endpoint"  # Replace with the actual endpoint you want to access
     url = base_url + endpoint
+    if print_url:
+        print (url)
     headers = {
         "User-Agent": "Mozilla/5.0",  # Set a user agent to avoid potential issues
         # Add any required headers or authentication tokens specified in the API documentation

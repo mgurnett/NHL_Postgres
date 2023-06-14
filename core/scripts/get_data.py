@@ -51,31 +51,31 @@ def load_teams (**kwargs):  # set to True if you wnat it to effect the database
 
 def load_player_vitals (player, **kwargs):  # set to True if you wnat it to effect the database
     if kwargs['database']:
-        Player_vitals.objects.all().delete()
-    data = read_api (f'people/{player}')
-    # print (data)
-    for record in data ['people']:
-        v = Player_vitals (
-            player = Player.objects.get(nhl_id = player),
-            firstName = record ['firstName'],
-            lastName = record ['lastName'],
-            birthDate = record ['birthDate'],
-            birthCity = record ['birthCity'],
-            birthCountry = record ['birthCountry'],
-            nationality = record ['nationality'],
-            height = record ['height'],
-            weight = record ['weight'],
-            active = record ['active'],
-            alternateCaptain = record ['alternateCaptain'],
-            captain = record ['captain'],
-            rookie = record ['rookie'],
-            shootsCatches = record ['shootsCatches'],
-            rosterStatus = record ['rosterStatus'],
-        )
-        if kwargs['database']:
-            v.save()
-        if kwargs['is_print']:
-            print (v)
+        Player_vitals.objects.get(id = player.id)
+
+    record = read_api (f'people/{player.nhl_id}', print_url = False).get ('people')[0]
+
+    v = Player_vitals (
+        player = Player.objects.get(id = player.id),
+        firstName = record ['firstName'],
+        lastName = record ['lastName'],
+        birthDate = record ['birthDate'],
+        birthCity = record ['birthCity'],
+        birthCountry = record ['birthCountry'],
+        nationality = record ['nationality'],
+        height = record ['height'],
+        weight = record ['weight'],
+        active = record ['active'],
+        alternateCaptain = record ['alternateCaptain'],
+        captain = record ['captain'],
+        rookie = record ['rookie'],
+        shootsCatches = record ['shootsCatches'],
+        rosterStatus = record ['rosterStatus'],
+    )
+    if kwargs['database']:
+        v.save()
+    if kwargs['is_print']:
+        print (v)
     return
 
 
@@ -103,13 +103,16 @@ def load_roster (team, **kwargs):  # set to True if you wnat it to effect the da
             r.save()
         if kwargs['is_print']:
             print (r)
-        load_player_vitals ( player_id, database = True, is_print = True)
     return
 
 def run():
     # load_divisions ( database = False, is_print = True)
     team_list = load_teams ( database = False, is_print = False)
-    load_roster ( OILERS, database = True, is_print = False)
-    # for team in team_list:
-    #     load_roster ( team.nhl_id, database = False, is_print = True)
+    load_roster ( OILERS, database = False, is_print = False)
+
+
+    players = Player.objects.all()
+    for player in players:
+        # print (f'{player} - {player.nhl_id} {type(player)}')
+        load_player_vitals ( player, database = False, is_print = True)
         
